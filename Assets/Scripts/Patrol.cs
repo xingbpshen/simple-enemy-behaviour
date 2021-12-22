@@ -9,11 +9,24 @@ public class Patrol : MonoBehaviour
 
     Transform _target;
 
-    private void Start() {
-        _target = patrolPoints[0];
+    int _targetIndex = 0;
+
+    private void Start() 
+    {
+        _target = patrolPoints[_targetIndex];
     }
     void Update()
     {
+        if (Vector3.Distance(transform.position, _target.position) < 0.5f)
+        {
+            _targetIndex++;
+            if (_targetIndex >= patrolPoints.Length)
+            {
+                _targetIndex = 0;
+            }
+            _target = patrolPoints[_targetIndex];
+        }
+        transform.LookAt(_target);
         transform.position = Vector3.Lerp(transform.position, _target.position, _speed * Time.deltaTime);
     }
 }
